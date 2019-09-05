@@ -6,84 +6,73 @@ import static org.junit.jupiter.api.Assertions.*;
 
 //TODO ExpiringCacheTest
 class ExpiringCacheTest {
-
+    
     @Test
-    void future() {
+    public void testSavingOfItems() throws Exception {
+        ExpiringCache<Integer, Integer> instance = new ExpiringCache<>(2, 4f/3f);
+        
+        assertEquals(Integer.valueOf(1), instance.get(1, (key) -> key * key, 1500));
+        assertEquals(Integer.valueOf(4), instance.get(2, (key) -> key * key, 2000));
+        assertEquals(2, instance.getSize());
+        assertEquals(2, instance.getTableSize());
+        assertEquals(2, instance.getModifiedCount());
+        
+        assertEquals(Integer.valueOf(4), instance.get(2, (key) -> key, 2000));
+        assertEquals(2, instance.getSize());
+        assertEquals(2, instance.getTableSize());
+        assertEquals(2, instance.getModifiedCount());
+        
+        assertEquals(Integer.valueOf(9), instance.get(3, (key) -> key * key, 2000));
+        assertEquals(3, instance.getSize());
+        assertEquals(3, instance.getTableSize());
+        assertEquals(0, instance.getModifiedCount());
+        
+        assertEquals(Integer.valueOf(16), instance.get(4, (key) -> key * key, 2000));
+        assertEquals(4, instance.getSize());
+        assertEquals(3, instance.getTableSize());
+        assertEquals(1, instance.getModifiedCount());
+
+        assertEquals(Integer.valueOf(25), instance.get(-5, (key) -> key * key, 1000));
+        assertEquals(5, instance.getSize());
+        assertEquals(5, instance.getTableSize());
+        assertEquals(0, instance.getModifiedCount());
+
+        assertEquals(Integer.valueOf(25), instance.get(-5));
+        assertEquals(5, instance.getSize());
+        assertEquals(5, instance.getTableSize());
+        assertEquals(0, instance.getModifiedCount());
+        
+        assertNull(instance.get(-5, System.currentTimeMillis() + 1000));
+        assertEquals(4, instance.getSize());
+        assertEquals(5, instance.getTableSize());
+        assertEquals(1, instance.getModifiedCount());
+        
+        assertEquals(Integer.valueOf(25), instance.get(5, (key) -> key * key, 1));
+        assertEquals(5, instance.getSize());
+        assertEquals(5, instance.getTableSize());
+        assertEquals(2, instance.getModifiedCount());
+        
+        assertEquals(Integer.valueOf(2), instance.get(1, (key) -> key + 1, 1, System.currentTimeMillis() + 1500));
+        assertEquals(5, instance.getSize());
+        assertEquals(5, instance.getTableSize());
+        assertEquals(2, instance.getModifiedCount());
+        
+        assertEquals(Integer.valueOf(9), instance.get(3));
+        assertEquals(Integer.valueOf(4), instance.get(2));
+        instance.remove(3);
+        assertNull(instance.get(3));
+        assertEquals(Integer.valueOf(4), instance.get(2));
+        
+        assertEquals(4, instance.getSize());
+        assertEquals(5, instance.getTableSize());
+        assertEquals(3, instance.getModifiedCount());
+        
+        assertEquals(Integer.valueOf(3), instance.get(3, (key) -> key, 2000));
+        assertEquals(5, instance.getSize());
+        assertEquals(5, instance.getTableSize());
+        assertEquals(4, instance.getModifiedCount());
+        
+        
     }
 
-    @Test
-    void future1() {
-    }
-
-    @Test
-    void future2() {
-    }
-
-    @Test
-    void future3() {
-    }
-
-    @Test
-    void get() {
-    }
-
-    @Test
-    void get1() {
-    }
-
-    @Test
-    void get2() {
-    }
-
-    @Test
-    void get3() {
-    }
-
-    @Test
-    void set() {
-    }
-
-    @Test
-    void set1() {
-    }
-
-    @Test
-    void set2() {
-    }
-
-    @Test
-    void put() {
-    }
-
-    @Test
-    void put1() {
-    }
-
-    @Test
-    void put2() {
-    }
-
-    @Test
-    void extractFuture() {
-    }
-
-    @Test
-    void extract() {
-    }
-
-    @Test
-    void remove() {
-    }
-
-    @Test
-    void clear() {
-    }
-
-    @Test
-    void count() {
-    }
-
-    @Test
-    void gc() {
-    }
 }
