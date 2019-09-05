@@ -52,6 +52,10 @@ public class ExpiringCache<K, V> {
 
     public int getSize() { return count.get(); }
     
+    public int getTableSize() { return table.length; }
+    
+    int getModifiedCount() { return modified.get(); }
+    
     public V get(K key) {
         return get(key, now());
     }
@@ -282,10 +286,7 @@ public class ExpiringCache<K, V> {
                 ++cnt;
                 if (Objects.equals(key, item.next.key)) {
                     V value = item.next.value;
-                    while (checkNext(item, now)) {
-                        ++cnt;
-                        item = item.next;
-                    }
+                    while (checkNext(item = item.next, now)) ++cnt;
                     count(cnt);
                     return value;
                 }
