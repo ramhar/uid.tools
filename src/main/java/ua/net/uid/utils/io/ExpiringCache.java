@@ -33,7 +33,8 @@ public class ExpiringCache<K, V> {
     private final float loadFactor;
     private int nextResize;
     private Chain<K, V>[] table;
-    ////////////////////////////////////////////////////////////////////////////
+
+    
     public ExpiringCache() {
         this(INIT_SIZE, LOAD_FACTOR);
     }
@@ -48,7 +49,7 @@ public class ExpiringCache<K, V> {
         this.nextResize = (int)(loadFactor * initSize);
         this.table = create(initSize);
     }
-    ////////////////////////////////////////////////////////////////////////////
+
     public int getSize() { return count.get(); }
     
     public V get(K key) {
@@ -363,156 +364,4 @@ public class ExpiringCache<K, V> {
         }
     }
     ////////////////////////////////////////////////////////////////////////////
-    
-    
-    
-    /*
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    private final static class Chain<K, V> extends Item<K, V> {
-        private final ExpiringCache<K, V> cache;
-        private int count = 0;
-
-        Chain(ExpiringCache<K, V> cache, Entry<K, V> next) {
-            super(next);
-            this.cache = cache;
-        }
-
-        synchronized Future<V> get(long now, K key) {
-            Item<K, V> item = this;
-            int cnt = 0;
-            while (next(now, item)) {
-                if (Objects.equals(key, item.next.key)) {
-                    return item.next.future;
-                }
-                ++cnt;
-                item = item.next;
-            }
-            count(cnt);
-            return null;
-        }
-
-        synchronized Future<V> future(long now, K key, Callable<V> callable, long expiry) {
-            Item<K, V> item = this, last = this;
-            int cnt = 0;
-            while (next(now, item)) {
-                if (Objects.equals(key, item.next.key)) {
-                    return item.next.future;
-                }
-                ++cnt;
-                if (item.next.expiry > expiry) {
-                    last = item.next;
-                }
-                item = item.next;
-            }
-            last.next = new Entry<>(key, cache.executor.submit(callable), expiry, last.next);
-            count(cnt + 1);
-            return last.next.future;
-        }
-
-        synchronized void set(long now, K key, V value, long expiry) {
-            Item<K, V> item = this, last = this;
-            int cnt = 0;
-            while (next(now, item)) {
-                if (Objects.equals(key, item.next.key)) {
-                    item.next = item.next.next;
-                    continue;
-                }
-                ++cnt;
-                if (item.next.expiry > expiry) {
-                    last = item.next;
-                }
-                item = item.next;
-            }
-            last.next = new Entry<>(key, new ReadyFuture<>(value), expiry, last.next);
-            count(cnt + 1);
-        }
-
-        synchronized void put(long now, K key, Callable<V> callable, long expiry) {
-            Item<K, V> item = this, last = this;
-            int cnt = 0;
-            while (next(now, item)) {
-                if (Objects.equals(key, item.next.key)) {
-                    item.next = item.next.next;
-                    continue;
-                }
-                ++cnt;
-                if (item.next.expiry > expiry) {
-                    last = item.next;
-                }
-                item = item.next;
-            }
-            last.next = new Entry<>(key, cache.executor.submit(callable), expiry, last.next);
-            count(cnt + 1);
-        }
-
-        synchronized Future<V> extract(long now, K key) {
-            Item<K, V> item = this;
-            int cnt = 0;
-            while (next(now, item)) {
-                if (Objects.equals(key, item.next.key)) {
-                    try {
-                        return item.next.future;
-                    } finally {
-                        item.next = item.next.next;
-                        --count;
-                        cache.count.decrementAndGet();
-                    }
-                }
-                ++cnt;
-                item = item.next;
-            }
-            count(cnt);
-            return null;
-        }
-
-        synchronized void remove(long now, K key) {
-            Item<K, V> item = this;
-            int cnt = 0;
-            while (next(now, item)) {
-                if (Objects.equals(key, item.next.key)) {
-                    item.next = item.next.next;
-                    --count;
-                    cache.count.decrementAndGet();
-                    return;
-                }
-                ++cnt;
-                item = item.next;
-            }
-            count(cnt);
-        }
-
-        void gc(long now) {
-            Item<K, V> item = this;
-            int cnt = 0;
-            while (next(now, item)) {
-                ++cnt;
-                item = item.next;
-            }
-            count(cnt);
-        }
-
-        void  clear() {
-            cache.count.addAndGet(-count);
-            count = 0;
-            next = null;
-        }
-
-        private boolean next(long now, Item<K, V> current) {
-            if (current.next != null) {
-                if (current.next.expiry <= now) {
-                    current.next = null;
-                } else {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        private void count(int value) {
-            if (count != value) {
-                cache.count.addAndGet(value - count);
-                count = value;
-            }
-        }
-    }*/
 }
