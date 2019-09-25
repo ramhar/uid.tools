@@ -1,19 +1,4 @@
-/*
- * Copyright 2019 nightfall.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-package ua.net.uid.utils.tools;
+package ua.net.uid.utils.time;
 
 import java.util.Calendar;
 
@@ -35,48 +20,16 @@ import java.util.Calendar;
  * 
  * https://www.aa.quae.nl/en/reken/zonpositie.html
  * 
+ * TODO: переделать под java.time
+ * 
  * @author nightfall
  */
 public class DailyEquation {
-    ////////////////////////////////////////////////////////////////////////////
-    public enum Zenith {
-        ASTRONOMICAL(108.),     // Astronomical sunrise/set is when the sun is 18 degrees below the horizon.
-        NAUTICAL(102.),         // Nautical sunrise/set is when the sun is 12 degrees below the horizon.
-        CIVIL(96.),             // Civil sunrise/set (dawn/dusk) is when the sun is 6 degrees below the horizon.
-        OFFICIAL(90.8333);      // Official sunrise/set is when the sun is 50' below the horizon.
-        
-        private final double degrees;
-        Zenith(double degrees) { this.degrees = degrees; }
-        public double getDegrees() { return degrees; }
-    }
-    ////////////////////////////////////////////////////////////////////////////
-    public enum Type {
-        NORMAL_DAY("normal"),
-        POLAR_NIGHT("night"),
-        POLAR_DAY("day");
-        private final String title;
-        Type(String title) { this.title = title; }
-        public String getTitle() { return title; }
-    }
-    ////////////////////////////////////////////////////////////////////////////
-    public static class Events {
-        private final Long sunrise;
-        private final Long sunset;
-        private final Type type;
-        Events(Long sunrise, Long sunset, Type type) {
-            this.sunrise = sunrise;
-            this.sunset = sunset;
-            this.type = type;
-        }
-        public Long getSunrise() { return sunrise; }
-        public Long getSunset() { return sunset; }
-        public Type getType() { return type; }
-    }
-    ////////////////////////////////////////////////////////////////////////////
-    public static Events getSunEvents(double latitude, double longitude, Calendar calendar, Zenith zenith) {
+    public static DailyEvents getSunEvents(double latitude, double longitude, Calendar calendar, Zenith zenith) {
         return getSunEvents(latitude, longitude, calendar, zenith.getDegrees());
     }
-    public static Events getSunEvents(double latitude, double longitude, Calendar calendar, double zenith) {
+
+    public static DailyEvents getSunEvents(double latitude, double longitude, Calendar calendar, double zenith) {
         longitude /= 15;
         int dayOfYear = calendar.get(Calendar.DAY_OF_YEAR);
 
@@ -84,11 +37,11 @@ public class DailyEquation {
         double sunsetTime = calculateEvent(latitude, longitude, zenith, dayOfYear, false);
 
         if (sunrizeTime == Double.NEGATIVE_INFINITY || sunsetTime == Double.NEGATIVE_INFINITY) { // the sun never rises on this location (on the specified date)
-            return new Events(null, null, Type.POLAR_NIGHT);
+            return new DailyEvents(null, null, DailyEventType.POLAR_NIGHT);
         } else if (sunrizeTime == Double.POSITIVE_INFINITY || sunsetTime == Double.POSITIVE_INFINITY) { // the sun never sets on this location (on the specified date)
-            return new Events(null, null, Type.POLAR_DAY);
+            return new DailyEvents(null, null, DailyEventType.POLAR_DAY);
         } else {
-            return new Events(convertDate(calendar, sunrizeTime), convertDate(calendar, sunsetTime), Type.NORMAL_DAY);
+            return new DailyEvents(convertDate(calendar, sunrizeTime), convertDate(calendar, sunsetTime), DailyEventType.NORMAL_DAY);
         }
     }
     
@@ -134,7 +87,6 @@ public class DailyEquation {
         return localMeanTime - baseLongitudeHour;
     }
     
-    private static final int DAYMSEC = 24 * 60 * 60 * 1000;
     protected static long convertDate(Calendar calendar, double utcTime)  {
         // localT = UT + localOffset
         int time = (int)(utcTime * 3600000) + calendar.get(Calendar.ZONE_OFFSET) + calendar.get(Calendar.DST_OFFSET);
@@ -148,4 +100,6 @@ public class DailyEquation {
         calendar.add(Calendar.MILLISECOND, time);
         return calendar.getTimeInMillis();
     }
+    
+    private static final int DAYMSEC = 24 * 60 * 60 * 1000;
 }
