@@ -53,11 +53,14 @@ public class CommonHelper {
     public static <T> boolean isEmpty(T[] array) {
         return array == null || array.length == 0;
     }
-    
+
+    @SafeVarargs
     public static <T> Set<T> setOf(T ... items) {
-        Set<T> result = new HashSet<>();
-        if (!isEmpty(items))
+        if (!isEmpty(items)) {
+            Set<T> result = new HashSet<>(items.length);
             Collections.addAll(result, items);
-        return result;
+            return result;
+        }
+        return new HashSet<>();
     }
 }

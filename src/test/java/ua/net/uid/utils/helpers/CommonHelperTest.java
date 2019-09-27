@@ -45,9 +45,9 @@ class CommonHelperTest {
 
     @Test
     void testIsEmptyCollection() {
-        Collection src = null;
+        Collection<Object> src = null;
         assertTrue(CommonHelper.isEmpty(src));
-        src = new ArrayList();
+        src = new ArrayList<>();
         assertTrue(CommonHelper.isEmpty(src));
         src.add("1");
         assertFalse(CommonHelper.isEmpty(src));
@@ -55,9 +55,9 @@ class CommonHelperTest {
 
     @Test
     void testIsEmptyMap() {
-        Map src = null;
+        Map<Object, Object> src = null;
         assertTrue(CommonHelper.isEmpty(src));
-        src = new HashMap();
+        src = new HashMap<>();
         assertTrue(CommonHelper.isEmpty(src));
         src.put(1, "1");
         assertFalse(CommonHelper.isEmpty(src));
