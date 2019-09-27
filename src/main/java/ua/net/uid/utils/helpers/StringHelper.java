@@ -16,6 +16,7 @@
 package ua.net.uid.utils.helpers;
 
 import java.io.IOException;
+import java.util.Iterator;
 
 public class StringHelper {
     private static final char[] HEX_CHARS = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
@@ -160,7 +161,6 @@ public class StringHelper {
         return string == null ? null : string.trim();
     }
 
-    @SuppressWarnings("SpellCheckingInspection")
     public static String ltrim(String string) {
         if (string == null) return null;
         int i = 0, length = string.length();
@@ -169,7 +169,6 @@ public class StringHelper {
         return i == 0 ? string : (i < length ? string.substring(i) : "");
     }
 
-    @SuppressWarnings("SpellCheckingInspection")
     public static String rtrim(String string) {
         if (string == null) return null;
         int i = string.length();
@@ -182,6 +181,42 @@ public class StringHelper {
         while (offset < source.length() && Character.isWhitespace(source.charAt(offset)))
             ++offset;
         return offset;
+    }
+
+    public static void join(Appendable builder, CharSequence div, Iterator<?> iterator) throws IOException {
+        join(builder, div, iterator, true, true);
+    }
+
+    public static void join(Appendable builder, CharSequence div, Iterator<?> iterator, boolean skipEmpty) throws IOException {
+        join(builder, div, iterator, skipEmpty, skipEmpty);
+    }
+
+    public static void join(Appendable builder, CharSequence div, Iterator<?> iterator, boolean skipEmpty, boolean skipNull) throws IOException {
+        boolean first = true;
+        while (iterator.hasNext()) {
+            Object item = iterator.next();
+            if (!skipNull || item != null) {
+                String str = String.valueOf(item);
+                if (!(skipEmpty && CommonHelper.isEmpty(str))) {
+                    if (first) first = false; else builder.append(div);
+                    builder.append(item.toString());
+                }
+            }
+        }
+    }
+
+    public static CharSequence join(CharSequence div, Iterator<?> iterator) {
+        return join(div, iterator, true, true);
+    }
+
+    public static CharSequence join(CharSequence div, Iterator<?> iterator, boolean skipEmpty) {
+        return join(div, iterator, skipEmpty, skipEmpty);
+    }
+
+    public static CharSequence join(CharSequence div, Iterator<?> iterator, boolean skipEmpty, boolean skipNull) {
+        StringBuilder builder = new StringBuilder();
+        try { join(builder, div, iterator, skipEmpty, skipNull); } catch (IOException ignore) {}
+        return builder;
     }
 
     public static boolean isAscii(int chr) {
