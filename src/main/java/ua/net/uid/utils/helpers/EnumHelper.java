@@ -33,8 +33,20 @@ public class EnumHelper {
         }
     }
 
+    public static <T extends Enum<T>> T valueOfIgnoreCase(Class<T> enumType, String value, T defValue) {
+        if (value == null) return defValue;
+        for (T item : enumType.getEnumConstants())
+            if (item.name().equalsIgnoreCase(value))
+                return item;
+        return defValue;
+    }
+
     public static <T extends Enum<T>> T valueOf(Class<T> enumType, String value) {
         return valueOf(enumType, value, null);
+    }
+
+    public static <T extends Enum<T>> T valueOfIgnoreCase(Class<T> enumType, String value) {
+        return valueOfIgnoreCase(enumType, value, null);
     }
 
     public static <T extends Enum<T>> List<T> toList(final Class<T> enumType) {
