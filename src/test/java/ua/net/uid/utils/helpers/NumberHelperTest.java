@@ -203,37 +203,41 @@ class NumberHelperTest {
         String source = "1 333 70000 465729124123444 .01 77. 3.333 .1e-3 222.e76 123.456e-78 888e+8 ";
 
         assertEquals((byte)1, NumberHelper.parse(source, position));
-        assertEquals(7, position.getIndex());
+        assertEquals(1, position.getIndex());
 
         assertEquals((short)333, NumberHelper.parse(source, position));
-        assertEquals(7, position.getIndex());
+        assertEquals(5, position.getIndex());
 
         assertEquals(70000, NumberHelper.parse(source, position));
-        assertEquals(7, position.getIndex());
+        assertEquals(11, position.getIndex());
 
         assertEquals(465729124123444l, NumberHelper.parse(source, position));
-        assertEquals(7, position.getIndex());
+        assertEquals(27, position.getIndex());
 
         assertEquals(.01, NumberHelper.parse(source, position));
-        assertEquals(7, position.getIndex());
+        assertEquals(31, position.getIndex());
 
         assertEquals(77., NumberHelper.parse(source, position));
-        assertEquals(7, position.getIndex());
+        assertEquals(35, position.getIndex());
 
         assertEquals(3.333, NumberHelper.parse(source, position));
-        assertEquals(7, position.getIndex());
+        assertEquals(41, position.getIndex());
 
         assertEquals(.1e-3, NumberHelper.parse(source, position));
-        assertEquals(7, position.getIndex());
+        assertEquals(47, position.getIndex());
 
         assertEquals(222.e76, NumberHelper.parse(source, position));
-        assertEquals(7, position.getIndex());
+        assertEquals(55, position.getIndex());
 
         assertEquals(123.456e-78, NumberHelper.parse(source, position));
-        assertEquals(7, position.getIndex());
+        assertEquals(67, position.getIndex());
 
         assertEquals(888e+8, NumberHelper.parse(source, position));
-        assertEquals(7, position.getIndex());
+        assertEquals(74, position.getIndex());
+
+        assertNull(NumberHelper.parse(source, position));
+        assertEquals(74, position.getIndex());
+        assertEquals(75, position.getErrorIndex());
     }
 
 }

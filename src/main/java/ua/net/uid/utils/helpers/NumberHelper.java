@@ -211,7 +211,7 @@ public class NumberHelper {
         if (real) {
             return Double.valueOf((double)main * Math.pow(10, base));
         } else {
-            return Byte.valueOf((byte)0);
+            return smallest(main);
         }
     }
 
