@@ -182,5 +182,57 @@ class StringHelperTest {
         assertEquals("1,2,,q,w,", StringHelper.joinItems(",", 1, 2, null, "q", "w", "").toString());
     }
 
-    
+    @Test
+    void testIsAscii() {
+        for(int i = 0; i < 128; ++i) 
+            assertTrue(StringHelper.isAscii(i));
+        for(int i = 7; i < 32; ++i)
+            assertFalse(StringHelper.isAscii(1 + (1 << i)));
+        assertFalse(StringHelper.isAscii(0xffffffff));
+    }
+
+    @Test
+    void testisAsciiUpper() {
+        for(int i = 0; i < 'A'; ++i) 
+            assertFalse(StringHelper.isAsciiUpper(i));
+        for(int i = 'A'; i <= 'Z'; ++i) 
+            assertTrue(StringHelper.isAsciiUpper(i));
+        for(int i = 'Z' + 1; i <= 128; ++i) 
+            assertFalse(StringHelper.isAsciiUpper(i));
+        for(int i = 7; i < 32; ++i)
+            assertFalse(StringHelper.isAsciiUpper(1 + (1 << i)));
+        assertFalse(StringHelper.isAsciiUpper(0xffffffff));
+    }
+
+    @Test
+    void testIsAsciiLower() {
+        for(int i = 0; i < 'a'; ++i) 
+            assertFalse(StringHelper.isAsciiLower(i));
+        for(int i = 'a'; i <= 'z'; ++i) 
+            assertTrue(StringHelper.isAsciiLower(i));
+        for(int i = 'z' + 1; i <= 128; ++i) 
+            assertFalse(StringHelper.isAsciiLower(i));
+        for(int i = 7; i < 32; ++i)
+            assertFalse(StringHelper.isAsciiLower(1 + (1 << i)));
+        assertFalse(StringHelper.isAsciiLower(0xffffffff));
+    }
+
+    @Test
+    void testIsAsciiDigit() {
+        for(int i = 0; i < '0'; ++i) 
+            assertFalse(StringHelper.isAsciiDigit(i));
+        for(int i = '0'; i <= '9'; ++i) 
+            assertTrue(StringHelper.isAsciiDigit(i));
+        for(int i = '9' + 1; i <= 128; ++i) 
+            assertFalse(StringHelper.isAsciiDigit(i));
+        for(int i = 7; i < 32; ++i)
+            assertFalse(StringHelper.isAsciiDigit(1 + (1 << i)));
+        assertFalse(StringHelper.isAsciiDigit(0xffffffff));
+    }
+
+    @Test
+    void testIsBlank() {
+        assertTrue(StringHelper.isBlank(" \t\r\n\u005Ct"));
+        assertFalse(StringHelper.isBlank(" \t\r\n\u005Ctq"));
+    }
 }

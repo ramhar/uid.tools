@@ -255,9 +255,11 @@ public class StringHelper {
     public static boolean isBlank(CharSequence str) {
         if (!CommonHelper.isEmpty(str)) {
             final int len = str.length();
-            for (int i = 0; i < len; ++i)
-                if (!Character.isWhitespace(str.charAt(i)))
+            for (int i = 0; i < len; ++i) {
+                char chr = str.charAt(i);
+                if ((Character.isHighSurrogate(chr) && !Character.isWhitespace(Character.toCodePoint(chr, str.charAt(++i)))) || !Character.isWhitespace(chr))
                     return false;
+            }
         }
         return true;
     }
