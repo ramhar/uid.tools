@@ -215,7 +215,7 @@ public class StringHelper {
     }
 
     public static void joinItemsTo(Appendable builder, CharSequence separator, Object ... items) throws IOException {
-        joinTo(builder, separator, new ArrayIterator<Object>(items), "", "");
+        joinTo(builder, separator, new ArrayIterator<>(items), "", "");
     }
 
     public static CharSequence join(CharSequence separator, Iterator<?> iterator, CharSequence emptyAs, CharSequence nullAs) {
@@ -233,7 +233,7 @@ public class StringHelper {
     }
 
     public static CharSequence joinItems(CharSequence separator, Object ... items) {
-        return join(separator, new ArrayIterator<Object>(items), "", "");
+        return join(separator, new ArrayIterator<>(items), "", "");
     }
 
     public static boolean isAscii(int chr) {
