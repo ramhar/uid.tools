@@ -232,7 +232,11 @@ class StringHelperTest {
 
     @Test
     void testIsBlank() {
+        assertTrue(StringHelper.isBlank(null));
+        assertTrue(StringHelper.isBlank(""));
         assertTrue(StringHelper.isBlank(" \t\r\n\u005Ct"));
+        assertFalse(StringHelper.isBlank("a"));
         assertFalse(StringHelper.isBlank(" \t\r\n\u005Ctq"));
+        assertFalse(StringHelper.isBlank(" \t\r\n\0x2F81A"));
     }
 }
