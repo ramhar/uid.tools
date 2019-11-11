@@ -18,6 +18,8 @@ package ua.net.uid.utils.helpers;
 import java.io.IOException;
 import java.util.Iterator;
 
+import ua.net.uid.utils.iterators.ArrayIterator;
+
 public class StringHelper {
     private static final char[] HEX_CHARS = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 
@@ -183,40 +185,55 @@ public class StringHelper {
         return offset;
     }
 
-    public static void join(Appendable builder, CharSequence div, Iterator<?> iterator) throws IOException {
-        join(builder, div, iterator, true, true);
-    }
-
-    public static void join(Appendable builder, CharSequence div, Iterator<?> iterator, boolean skipEmpty) throws IOException {
-        join(builder, div, iterator, skipEmpty, skipEmpty);
-    }
-
-    public static void join(Appendable builder, CharSequence div, Iterator<?> iterator, boolean skipEmpty, boolean skipNull) throws IOException {
+    public static void joinTo(Appendable builder, CharSequence separator, Iterator<?> iterator, CharSequence emptyAs, CharSequence nullAs) throws IOException {
         boolean first = true;
         while (iterator.hasNext()) {
             Object item = iterator.next();
-            if (!skipNull || item != null) {
-                String str = String.valueOf(item);
-                if (!(skipEmpty && CommonHelper.isEmpty(str))) {
-                    if (first) first = false; else builder.append(div);
-                    builder.append(item.toString());
+            if (item == null) {
+                if (nullAs != null) {
+                    if (first) first = false; else builder.append(separator);
+                    builder.append(nullAs);
                 }
+            } else if (CommonHelper.isEmpty(item)) {
+                if (emptyAs != null) {
+                    if (first) first = false; else builder.append(separator);
+                    builder.append(emptyAs);
+                }
+            } else {
+                if (first) first = false; else builder.append(separator);
+                builder.append(item.toString());
             }
         }
     }
 
-    public static CharSequence join(CharSequence div, Iterator<?> iterator) {
-        return join(div, iterator, true, true);
+    public static void joinTo(Appendable builder, CharSequence separator, Iterator<?> iterator, CharSequence emptyAs) throws IOException {
+        joinTo(builder, separator, iterator, emptyAs, emptyAs);
     }
 
-    public static CharSequence join(CharSequence div, Iterator<?> iterator, boolean skipEmpty) {
-        return join(div, iterator, skipEmpty, skipEmpty);
+    public static void joinTo(Appendable builder, CharSequence separator, Iterator<?> iterator) throws IOException {
+        joinTo(builder, separator, iterator, "", "");
     }
 
-    public static CharSequence join(CharSequence div, Iterator<?> iterator, boolean skipEmpty, boolean skipNull) {
+    public static void joinItemsTo(Appendable builder, CharSequence separator, Object ... items) throws IOException {
+        joinTo(builder, separator, new ArrayIterator<Object>(items), "", "");
+    }
+
+    public static CharSequence join(CharSequence separator, Iterator<?> iterator, CharSequence emptyAs, CharSequence nullAs) {
         StringBuilder builder = new StringBuilder();
-        try { join(builder, div, iterator, skipEmpty, skipNull); } catch (IOException ignore) {}
+        try { joinTo(builder, separator, iterator, emptyAs, nullAs); } catch (IOException ignore) {}
         return builder;
+    }
+
+    public static CharSequence join(CharSequence separator, Iterator<?> iterator, CharSequence emptyAs) {
+        return join(separator, iterator, emptyAs, emptyAs);
+    }
+
+    public static CharSequence join(CharSequence separator, Iterator<?> iterator) {
+        return join(separator, iterator, "", "");
+    }
+
+    public static CharSequence joinItems(CharSequence separator, Object ... items) {
+        return join(separator, new ArrayIterator<Object>(items), "", "");
     }
 
     public static boolean isAscii(int chr) {
@@ -233,5 +250,15 @@ public class StringHelper {
 
     public static boolean isAsciiDigit(int chr) {
         return chr >= '0' && chr <= '9';
+    }
+
+    public static boolean isBlank(CharSequence str) {
+        if (!CommonHelper.isEmpty(str)) {
+            final int len = str.length();
+            for (int i = 0; i < len; ++i)
+                if (!Character.isWhitespace(str.charAt(i)))
+                    return false;
+        }
+        return true;
     }
 }

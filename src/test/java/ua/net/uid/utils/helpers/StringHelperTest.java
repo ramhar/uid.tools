@@ -4,6 +4,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.IOException;
+import java.util.Arrays;
+
 @SuppressWarnings("SpellCheckingInspection")
 class StringHelperTest {
 
@@ -99,4 +102,85 @@ class StringHelperTest {
         assertEquals(15, StringHelper.skipWhitespace(src, 15));
         assertEquals(src.length(), StringHelper.skipWhitespace(src, 18));
     }
+
+    @Test
+    void testJoinToBuilderWithEmptyAndNull() throws IOException {
+        StringBuilder builder = new StringBuilder();
+        Iterable<Object> src = Arrays.asList(1, 2, null, "q", "w", "");
+        
+        StringHelper.joinTo(builder, ",", src.iterator(), "E", "N");
+        assertEquals("1,2,N,q,w,E", builder.toString()); builder.setLength(0);
+
+        StringHelper.joinTo(builder, ",", src.iterator(), "E", "");
+        assertEquals("1,2,,q,w,E", builder.toString()); builder.setLength(0);
+
+        StringHelper.joinTo(builder, ",", src.iterator(), "E", null);
+        assertEquals("1,2,q,w,E", builder.toString()); builder.setLength(0);
+
+        StringHelper.joinTo(builder, ",", src.iterator(), "", "N");
+        assertEquals("1,2,N,q,w,", builder.toString()); builder.setLength(0);
+
+        StringHelper.joinTo(builder, ",", src.iterator(), null, "N");
+        assertEquals("1,2,N,q,w", builder.toString()); builder.setLength(0);
+    }
+
+    @Test
+    void testJoinToBuilderWithEmpty() throws IOException {
+        StringBuilder builder = new StringBuilder();
+        Iterable<Object> src = Arrays.asList(1, 2, null, "q", "w", "");
+
+        StringHelper.joinTo(builder, ",", src.iterator(), "-");
+        assertEquals("1,2,-,q,w,-", builder.toString()); builder.setLength(0);
+
+        StringHelper.joinTo(builder, ",", src.iterator(), "");
+        assertEquals("1,2,,q,w,", builder.toString()); builder.setLength(0);
+
+        StringHelper.joinTo(builder, ",", src.iterator(), null);
+        assertEquals("1,2,q,w", builder.toString()); builder.setLength(0);
+    }
+
+    @Test
+    void testJoinToBuilder() throws IOException {
+        StringBuilder builder = new StringBuilder();
+        StringHelper.joinTo(builder, ",", Arrays.asList(1, 2, null, "q", "w", "").iterator());
+        assertEquals("1,2,,q,w,", builder.toString()); builder.setLength(0);
+    }
+
+    @Test
+    void testJoinItemsToBuilder() throws IOException {
+        StringBuilder builder = new StringBuilder();
+        StringHelper.joinItemsTo(builder, ",", 1, 2, null, "q", "w", "");
+        assertEquals("1,2,,q,w,", builder.toString()); builder.setLength(0);
+    }
+
+    @Test
+    void testJoinWithEmptyAndNull() {
+        Iterable<Object> src = Arrays.asList(1, 2, null, "q", "w", "");
+        assertEquals("1,2,N,q,w,E", StringHelper.join(",", src.iterator(), "E", "N").toString());
+        assertEquals("1,2,,q,w,E", StringHelper.join(",", src.iterator(), "E", "").toString());
+        assertEquals("1,2,q,w,E", StringHelper.join(",", src.iterator(), "E", null).toString());
+        assertEquals("1,2,N,q,w,", StringHelper.join(",", src.iterator(), "", "N").toString());
+        assertEquals("1,2,N,q,w", StringHelper.join(",", src.iterator(), null, "N").toString());
+    }
+
+    @Test
+    void testJoinWithEmpty() throws IOException {
+        Iterable<Object> src = Arrays.asList(1, 2, null, "q", "w", "");
+        assertEquals("1,2,-,q,w,-", StringHelper.join(",", src.iterator(), "-").toString());
+        assertEquals("1,2,,q,w,", StringHelper.join(",", src.iterator(), "").toString());
+        assertEquals("1,2,q,w", StringHelper.join(",", src.iterator(), null).toString());
+    }
+
+    @Test
+    void testJoin() throws IOException {
+        Iterable<Object> src = Arrays.asList(1, 2, null, "q", "w", "");
+        assertEquals("1,2,,q,w,", StringHelper.join(",", src.iterator()).toString());
+    }
+
+    @Test
+    void testJoinItems() throws IOException {
+        assertEquals("1,2,,q,w,", StringHelper.joinItems(",", 1, 2, null, "q", "w", "").toString());
+    }
+
+    
 }
