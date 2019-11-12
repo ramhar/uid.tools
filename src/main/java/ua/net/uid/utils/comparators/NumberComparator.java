@@ -22,7 +22,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- *
+ * 
  * @author nightfall
  */
 public class NumberComparator implements Comparator<Number> {
@@ -33,13 +33,13 @@ public class NumberComparator implements Comparator<Number> {
     private NumberComparator() {}
     
     @Override
+    //@SuppressWarnings("unchecked")
     public int compare(Number o1, Number o2) {
         if (o1 == o2) return 0;
         if (o1 == null) return -1;
         if (o2 == null) return 1;
-        if (o1.getClass() == o2.getClass() && o1 instanceof Comparable) 
-            return ((Comparable) o1).compareTo((Comparable) o2);
-        
+        if (o1.getClass().equals(o2.getClass()) && o1 instanceof Comparable)
+            return cmp(Comparable.class.cast(o1), Comparable.class.cast(o2));
         if (o1 instanceof BigDecimal) return compareBig((BigDecimal)o1, o2);
         if (o2 instanceof BigDecimal) return -compareBig((BigDecimal) o2, o1);
         if (o1 instanceof BigInteger) return compareBig((BigInteger) o1, o2);
@@ -47,7 +47,11 @@ public class NumberComparator implements Comparator<Number> {
 
         return isInteger(o1) && isInteger(o2)
             ? Long.compare(o1.longValue(), o1.longValue())
-            : Double.compare(o1.floatValue(), o2.floatValue());
+            : Double.compare(o1.doubleValue(), o2.doubleValue());
+    }
+
+    private static <T extends Comparable<? super T>> int cmp(T o1, T o2) {
+        return o1.compareTo(o2);
     }
 
     private static boolean isInteger(Number val) {

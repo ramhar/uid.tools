@@ -104,7 +104,8 @@ public class CommonHelper {
         return result;
     }
 
-    public <T> T minBy(Comparator<? super T> comparator, T ... items) {
+    @SafeVarargs
+    public static <T> T minBy(Comparator<? super T> comparator, T ... items) {
         T result = null;
         if (!isEmpty(items)) {
             for (T item : items)
@@ -114,7 +115,8 @@ public class CommonHelper {
         return result;
     }
 
-    public <T> T maxBy(Comparator<? super T> comparator, T ... items) {
+    @SafeVarargs
+    public static <T> T maxBy(Comparator<? super T> comparator, T ... items) {
         T result = null;
         if (!isEmpty(items)) {
             for (T item : items)

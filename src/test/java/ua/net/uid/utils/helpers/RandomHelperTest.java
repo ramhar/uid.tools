@@ -7,7 +7,7 @@ import java.util.Random;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class RandomHelperTest { //TODO RandomHelperTest
+class RandomHelperTest {
 
     RandomHelperTest() {
     }

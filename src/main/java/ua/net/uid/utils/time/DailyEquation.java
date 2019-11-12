@@ -20,8 +20,6 @@ import java.util.Calendar;
  * 
  * https://www.aa.quae.nl/en/reken/zonpositie.html
  * 
- * TODO: переделать под java.time
- * 
  * @author nightfall
  */
 public class DailyEquation {
