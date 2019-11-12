@@ -18,6 +18,7 @@ package ua.net.uid.utils.helpers;
 import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -98,6 +99,26 @@ public class CommonHelper {
         if (!isEmpty(items)) {
             for (T item : items)
                 if (compare(item, result, false) > 0)
+                    result = item;
+        }
+        return result;
+    }
+
+    public <T> T minBy(Comparator<? super T> comparator, T ... items) {
+        T result = null;
+        if (!isEmpty(items)) {
+            for (T item : items)
+                if (comparator.compare(result, item) < 0)
+                    result = item;
+        }
+        return result;
+    }
+
+    public <T> T maxBy(Comparator<? super T> comparator, T ... items) {
+        T result = null;
+        if (!isEmpty(items)) {
+            for (T item : items)
+                if (comparator.compare(result, item) > 0)
                     result = item;
         }
         return result;

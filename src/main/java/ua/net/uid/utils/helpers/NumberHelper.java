@@ -40,10 +40,10 @@ public class NumberHelper {
     }
 
     public static Number smallest(long value) {
-        if (value >= Byte.MIN_VALUE && value <= Byte.MAX_VALUE) return Byte.valueOf((byte)value);
-        if (value >= Short.MIN_VALUE && value <= Short.MAX_VALUE) return Short.valueOf((short)value);
-        if (value >= Integer.MIN_VALUE && value <= Integer.MAX_VALUE) return Integer.valueOf((int)value);
-        return Long.valueOf(value);
+        if (value >= Byte.MIN_VALUE && value <= Byte.MAX_VALUE) return (byte)value;
+        if (value >= Short.MIN_VALUE && value <= Short.MAX_VALUE) return (short)value;
+        if (value >= Integer.MIN_VALUE && value <= Integer.MAX_VALUE) return (int)value;
+        return value;
     }
 
     public static Number parse(CharSequence source, ParsePosition position) {
@@ -67,10 +67,198 @@ public class NumberHelper {
     public static Number parse(CharSequence source) {
         return parse(source, new ParsePosition(0));
     }
-
-
-
     
+    public byte min(byte ... items) {
+        if (items == null || items.length == 0)
+            throw new IllegalArgumentException("the arguments array must not be null or empty");
+        byte first = items[0];
+        if (first > Byte.MIN_VALUE) {
+            final int length = items.length;
+            for(int i = 1; i < length; ++i) {
+                final byte other = items[i];
+                if (other == Byte.MIN_VALUE) return other;
+                if (other < first) first = other;
+            }
+        }
+        return first;
+    }
+    
+    public byte max(byte ... items) {
+        if (items == null || items.length == 0)
+            throw new IllegalArgumentException("the arguments array must not be null or empty");
+        byte first = items[0];
+        if (first < Byte.MAX_VALUE) {
+            final int length = items.length;
+            for(int i = 1; i < length; ++i) {
+                final byte other = items[i];
+                if (other == Byte.MAX_VALUE) return other;
+                if (other > first) first = other;
+            }
+        }
+        return first;
+    }
+    
+    public short min(short ... items) {
+        if (items == null || items.length == 0)
+            throw new IllegalArgumentException("the arguments array must not be null or empty");
+        short first = items[0];
+        if (first > Short.MIN_VALUE) {
+            final int length = items.length;
+            for(int i = 1; i < length; ++i) {
+                final short other = items[i];
+                if (other == Short.MIN_VALUE) return other;
+                if (other < first) first = other;
+            }
+        }
+        return first;
+    }
+        
+    public short max(short ... items) {
+        if (items == null || items.length == 0)
+            throw new IllegalArgumentException("the arguments array must not be null or empty");
+        short first = items[0];
+        if (first < Short.MAX_VALUE) {
+            final int length = items.length;
+            for(int i = 1; i < length; ++i) {
+                final short other = items[i];
+                if (other == Short.MAX_VALUE) return other;
+                if (other > first) first = other;
+            }
+        }
+        return first;
+    }
+
+    public int min(int ... items) {
+        if (items == null || items.length == 0)
+            throw new IllegalArgumentException("the arguments array must not be null or empty");
+        int first = items[0];
+        if (first > Integer.MIN_VALUE) {
+            final int length = items.length;
+            for(int i = 1; i < length; ++i) {
+                final int other = items[i];
+                if (other == Integer.MIN_VALUE) return other;
+                if (other < first) first = other;
+            }
+        }
+        return first;
+    }
+
+    public int max(int ... items) {
+        if (items == null || items.length == 0)
+            throw new IllegalArgumentException("the arguments array must not be null or empty");
+        int first = items[0];
+        if (first < Integer.MAX_VALUE) {
+            final int length = items.length;
+            for(int i = 1; i < length; ++i) {
+                final int other = items[i];
+                if (other == Integer.MAX_VALUE) return other;
+                if (other > first) first = other;
+            }
+        }
+        return first;
+    }
+
+    public long min(long ... items) {
+        if (items == null || items.length == 0)
+            throw new IllegalArgumentException("the arguments array must not be null or empty");
+        long first = items[0];
+        if (first > Long.MIN_VALUE) {
+            final int length = items.length;
+            for(int i = 1; i < length; ++i) {
+                final long other = items[i];
+                if (other == Long.MIN_VALUE) return other;
+                if (other < first) first = other;
+            }
+        }
+        return first;
+    }
+
+    public long max(long ... items) {
+        if (items == null || items.length == 0)
+            throw new IllegalArgumentException("the arguments array must not be null or empty");
+        long first = items[0];
+        if (first < Long.MAX_VALUE) {
+            final int length = items.length;
+            for(int i = 1; i < length; ++i) {
+                final long other = items[i];
+                if (other == Long.MAX_VALUE) return other;
+                if (other > first) first = other;
+            }
+        }
+        return first;
+    }
+    
+    public float min(float ... items) {
+        if (items == null || items.length == 0)
+            throw new IllegalArgumentException("the arguments array must not be null or empty");
+        float first = items[0];
+        if (first == first && Float.NEGATIVE_INFINITY != first) {
+            final int length = items.length;
+            for(int i = 1; i < length; ++i) {
+                final float other = items[i];
+                if (other != other || Float.NEGATIVE_INFINITY == other) return other;
+                if (other < first) first = other;
+            }
+        }
+        return first;
+    }
+
+    public float max(float ... items) {
+        if (items == null || items.length == 0)
+            throw new IllegalArgumentException("the arguments array must not be null or empty");
+        final int length = items.length;
+        int i = 1;
+        float first = items[0];
+        while (first != first && i < length) first = items[++i]; // first not nan
+        if (first != Float.POSITIVE_INFINITY) {
+            for(; i < length; ++i) {
+                final float other = items[i];
+                if (other == Float.POSITIVE_INFINITY) return other;
+                if (other == other && other > first) first = other;
+            }
+        }
+        return first;
+    }
+
+    public double min(double ... items) {
+        if (items == null || items.length == 0)
+            throw new IllegalArgumentException("the arguments array must not be null or empty");
+        double first = items[0];
+        if (first == first && Float.NEGATIVE_INFINITY != first) {
+            final int length = items.length;
+            for(int i = 1; i < length; ++i) {
+                final double other = items[i];
+                if (other != other || Double.NEGATIVE_INFINITY == other) return other;
+                if (other < first) first = other;
+            }
+        }
+        return first;
+    }
+    
+    public double max(double ... items) {
+        if (items == null || items.length == 0)
+            throw new IllegalArgumentException("the arguments array must not be null or empty");
+        final int length = items.length;
+        int i = 1;
+        double first = items[0];
+        while (first != first && i < length) first = items[++i];
+        if (first != Double.POSITIVE_INFINITY) {
+            for(; i < length; ++i) {
+                final double other = items[i];
+                if (other == Double.POSITIVE_INFINITY) return other;
+                if (other == other && other > first) first = other;
+            }
+        }
+        return first;
+    }
+    
+    /*
+    public Number min(Number ... items) {
+    }
+    public Number max(Number ... items) {
+    }
+    */
+    ////////////////////////////////////////////////////////////////////////////
     private static Number nextZeroDigit(CharSequence source, ParsePosition position, int end, int length) {
         if (end < source.length()) {
             char chr = source.charAt(end);
@@ -95,7 +283,7 @@ public class NumberHelper {
             }
         }
         position.setIndex(end);
-        return Byte.valueOf((byte)0);
+        return (byte)0;
     }
 
     private static Number nextHexNumeric(CharSequence source, ParsePosition position, int end, int length) {
@@ -157,7 +345,7 @@ public class NumberHelper {
                         ++base;
                     } while ((main & -2L) == main);
                 }
-                return Double.valueOf((double)main * Math.pow(2, base));
+                return (double)main * Math.pow(2, base);
             } else {
                 return smallest(main);
             }
@@ -209,7 +397,7 @@ public class NumberHelper {
         }
         position.setIndex(end);
         if (real) {
-            return Double.valueOf((double)main * Math.pow(10, base));
+            return (double)main * Math.pow(10, base);
         } else {
             return smallest(main);
         }
@@ -243,7 +431,7 @@ public class NumberHelper {
                 }
             }
             position.setIndex(end);
-            return Double.valueOf((double)main * Math.pow(10, (sig * pow) + base));
+            return (double)main * Math.pow(10, (sig * pow) + base);
         } else {
             ++end;
             position.setErrorIndex(end);
@@ -269,7 +457,7 @@ public class NumberHelper {
                     }
                 }
                 position.setIndex(end);
-                return Double.valueOf((double)main * Math.pow(10, base));
+                return (double)main * Math.pow(10, base);
             }
         }
         position.setIndex(end);
