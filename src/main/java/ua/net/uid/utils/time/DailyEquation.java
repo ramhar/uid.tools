@@ -84,7 +84,8 @@ public class DailyEquation {
         // UT = T - lngHour
         return localMeanTime - baseLongitudeHour;
     }
-    
+
+    private static final int DAYMSEC = 24 * 60 * 60 * 1000;
     protected static long convertDate(Calendar calendar, double utcTime)  {
         // localT = UT + localOffset
         int time = (int)(utcTime * 3600000) + calendar.get(Calendar.ZONE_OFFSET) + calendar.get(Calendar.DST_OFFSET);
@@ -99,5 +100,5 @@ public class DailyEquation {
         return calendar.getTimeInMillis();
     }
     
-    private static final int DAYMSEC = 24 * 60 * 60 * 1000;
+    private DailyEquation() {}
 }
