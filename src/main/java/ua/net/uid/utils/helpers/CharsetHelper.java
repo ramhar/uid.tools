@@ -30,10 +30,6 @@ public class CharsetHelper {
         return false;
     }
 
-    public static Charset toCharset(Charset charset) {
-        return charset == null ? Charset.defaultCharset() : charset;
-    }
-
     public static Charset toCharset(String charsetName) {
         return charsetName == null ? Charset.defaultCharset() : Charset.forName(charsetName);
     }
