@@ -48,24 +48,12 @@ public class StringHelper {
         for (int e = start; e < end; ++e) {
             char chr = string.charAt(e);
             switch (chr) {
-                case '"':
-                case '\\':
-                    break;
-                case '\t':
-                    chr = 't';
-                    break;
-                case '\b':
-                    chr = 'b';
-                    break;
-                case '\n':
-                    chr = 'n';
-                    break;
-                case '\r':
-                    chr = 'r';
-                    break;
-                case '\f':
-                    chr = 'f';
-                    break;
+                case '"': case '\\': break;
+                case '\t': chr = 't'; break;
+                case '\b': chr = 'b'; break;
+                case '\n': chr = 'n'; break;
+                case '\r': chr = 'r'; break;
+                case '\f': chr = 'f'; break;
                 default:
                     if (chr < 32) {
                         if (start < e) builder.append(string, start, e);
@@ -105,24 +93,12 @@ public class StringHelper {
                 if (start < end) builder.append(string, start, end);
                 chr = string.charAt(++end);
                 switch (chr) {
-                    case '"':
-                    case '\\':
-                        break;
-                    case 't':
-                        chr = '\t';
-                        break;
-                    case 'b':
-                        chr = '\b';
-                        break;
-                    case 'n':
-                        chr = '\n';
-                        break;
-                    case 'r':
-                        chr = '\r';
-                        break;
-                    case 'f':
-                        chr = '\f';
-                        break;
+                    case '"': case '\\': break;
+                    case 't': chr = '\t'; break;
+                    case 'b': chr = '\b'; break;
+                    case 'n': chr = '\n'; break;
+                    case 'r': chr = '\r'; break;
+                    case 'f': chr = '\f'; break;
                     case 'u':
                         chr = 0;
                         for (int i = 1; i <= 4; ++i) {
@@ -262,5 +238,21 @@ public class StringHelper {
             }
         }
         return true;
+    }
+
+    public static int length(CharSequence str) {
+        return str == null ? 0 : str.length();
+    }
+
+    public static int[] toCodePoints(String str) {
+        if (str == null) return null;
+        int length = str.codePointCount(0, str.length());
+        int[] result = new int[length];
+        for (int i = 0, j = 0; i < length; ++i) {
+            int chr = str.codePointAt(j);
+            j += Character.charCount(chr);
+            result[i] = chr;
+        }
+        return result;
     }
 }

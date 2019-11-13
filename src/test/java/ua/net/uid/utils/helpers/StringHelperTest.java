@@ -239,4 +239,21 @@ class StringHelperTest {
         assertFalse(StringHelper.isBlank(" \t\r\n\u005Ctq"));
         assertFalse(StringHelper.isBlank(" \t\r\n\0x2F81A"));
     }
+
+    @Test
+    void testLength() {
+        assertEquals(0, StringHelper.length(null));
+        assertEquals(0, StringHelper.length(""));
+        assertEquals(3, StringHelper.length("123"));
+    }
+
+    @Test
+    void testToCodePoints() {
+        assertNull(StringHelper.toCodePoints(null));
+        assertEquals(0, StringHelper.toCodePoints("").length);
+        String src = "Пří視客øĥäΘい파ป็م♛";
+        int[] codes = {1055, 345, 237, 35222, 23458, 248, 293, 228, 920, 12356, 54028, 3611, 3655, 1605, 9819};
+        // String dst = new String(codes, 0, codes.length);
+        assertArrayEquals(codes, StringHelper.toCodePoints(src));
+    }
 }
