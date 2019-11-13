@@ -47,6 +47,24 @@ public class IOHelper {
         return copy(input, output, DEFAULT_BUFFER_SIZE);
     }
 
+    public static long copy(Reader reader, Writer writer, char[] buffer) throws IOException {
+        long result = 0;
+        int readed;
+        while ((readed = reader.read(buffer)) != -1) {
+            writer.write(buffer, 0, readed);
+            result += readed;
+        }
+        return result;
+    }
+
+    public static long copy(Reader reader, Writer writer, int buffer) throws IOException {
+        return copy(reader, writer, new char[buffer]);
+    }
+
+    public static long copy(Reader reader, Writer writer) throws IOException {
+        return copy(reader, writer, DEFAULT_BUFFER_SIZE);
+    }
+
     public static byte[] toByteArray(final InputStream input, byte[] buffer) throws IOException {
         try (ByteArrayOutputStream output = new ByteArrayOutputStream()) {
             copy(input, output, buffer);
