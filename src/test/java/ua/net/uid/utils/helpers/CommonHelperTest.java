@@ -164,7 +164,7 @@ class CommonHelperTest {
 
         @Override
         public void close() throws Exception {
-            called = true; Map.of();
+            called = true;
             throw new IOException("test exception");
         }
     }
