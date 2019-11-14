@@ -109,7 +109,7 @@ public class CommonHelper {
         T result = null;
         if (!isEmpty(items)) {
             for (T item : items)
-                if (comparator.compare(result, item) < 0)
+                if (comparator.compare(result, item) > 0)
                     result = item;
         }
         return result;
@@ -120,7 +120,7 @@ public class CommonHelper {
         T result = null;
         if (!isEmpty(items)) {
             for (T item : items)
-                if (comparator.compare(result, item) > 0)
+                if (comparator.compare(result, item) < 0)
                     result = item;
         }
         return result;
