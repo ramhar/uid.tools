@@ -17,6 +17,16 @@ public class EnumHelperTest {
     }
 
     @Test
+    void testStringToEnumIgnoreCaseWithDefault() {
+        assertNull(EnumHelper.valueOfIgnoreCase(Source.class, "Zero", null));
+        assertEquals(Source.four, EnumHelper.valueOfIgnoreCase(Source.class, "Zero", Source.four));
+        assertEquals(Source.one, EnumHelper.valueOfIgnoreCase(Source.class, "one", null));
+        assertEquals(Source.two, EnumHelper.valueOfIgnoreCase(Source.class, "Two", null));
+        assertEquals(Source.three, EnumHelper.valueOfIgnoreCase(Source.class, "thrEE", null));
+        assertEquals(Source.four, EnumHelper.valueOfIgnoreCase(Source.class, "FOUR", null));
+    }
+
+    @Test
     void testStringToEnumDefaultNull() {
         assertNull(EnumHelper.valueOf(Source.class, "zero"));
         assertEquals(Source.two, EnumHelper.valueOf(Source.class, "two"));
@@ -24,7 +34,16 @@ public class EnumHelperTest {
     }
 
     @Test
-    void toList() {
+    void testStringToEnumIgnoreCaseDefaultNull() {
+        assertNull(EnumHelper.valueOfIgnoreCase(Source.class, "Zero"));
+        assertEquals(Source.one, EnumHelper.valueOfIgnoreCase(Source.class, "one"));
+        assertEquals(Source.two, EnumHelper.valueOfIgnoreCase(Source.class, "Two"));
+        assertEquals(Source.three, EnumHelper.valueOfIgnoreCase(Source.class, "thrEE"));
+        assertEquals(Source.four, EnumHelper.valueOfIgnoreCase(Source.class, "FOUR"));
+    }
+
+    @Test
+    void testToList() {
         assertEquals(
                 Arrays.asList(Source.one, Source.two, Source.three, Source.four, Source.five),
                 EnumHelper.toList(Source.class)
@@ -32,7 +51,7 @@ public class EnumHelperTest {
     }
 
     @Test
-    void toMap() {
+    void testToMap() {
         Map<String, Source> map = new HashMap<>();
         map.put(Source.one.toString(), Source.one);
         map.put(Source.two.toString(), Source.two);
