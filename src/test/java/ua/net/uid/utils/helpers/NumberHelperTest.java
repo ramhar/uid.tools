@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.text.ParsePosition;
 
@@ -240,4 +241,101 @@ class NumberHelperTest {
         assertEquals(75, position.getErrorIndex());
     }
 
+    @Test
+    void testMinOfBytes() {
+        assertThrows(IllegalArgumentException.class, () -> NumberHelper.min((byte[])null));
+        assertThrows(IllegalArgumentException.class, () -> NumberHelper.min(new byte[0]));
+        assertEquals((byte)-55, NumberHelper.min(new byte[] {1,85,-4,6,3,-55}) );
+    }
+
+    @Test
+    void testMaxOfBytes() {
+        assertThrows(IllegalArgumentException.class, () -> NumberHelper.max((byte[])null));
+        assertThrows(IllegalArgumentException.class, () -> NumberHelper.max(new byte[0]));
+        assertEquals((byte)85, NumberHelper.max(new byte[] {1,85,-4,6,3,-55}) );
+    }
+
+    @Test
+    void testMinOfShorts() {
+        assertThrows(IllegalArgumentException.class, () -> NumberHelper.min((short[])null));
+        assertThrows(IllegalArgumentException.class, () -> NumberHelper.min(new short[0]));
+        assertEquals((short)-55, NumberHelper.min(new short[] {1,85,-4,6,3,-55}) );
+    }
+
+    @Test
+    void testMaxOfShorts() {
+        assertThrows(IllegalArgumentException.class, () -> NumberHelper.max((short[])null));
+        assertThrows(IllegalArgumentException.class, () -> NumberHelper.max(new short[0]));
+        assertEquals((short)85, NumberHelper.max(new short[] {1,85,-4,6,3,-55}) );
+    }
+
+    @Test
+    void testMinOfInts() {
+        assertThrows(IllegalArgumentException.class, () -> NumberHelper.min((int[])null));
+        assertThrows(IllegalArgumentException.class, () -> NumberHelper.min(new int[0]));
+        assertEquals((int)-55, NumberHelper.min(new int[] {1,85,-4,6,3,-55}) );
+    }
+
+    @Test
+    void testMaxOfInts() {
+        assertThrows(IllegalArgumentException.class, () -> NumberHelper.max((int[])null));
+        assertThrows(IllegalArgumentException.class, () -> NumberHelper.max(new int[0]));
+        assertEquals((int)85, NumberHelper.max(new int[] {1,85,-4,6,3,-55}) );
+    }
+
+    @Test
+    void testMinOfLongs() {
+        assertThrows(IllegalArgumentException.class, () -> NumberHelper.min((long[])null));
+        assertThrows(IllegalArgumentException.class, () -> NumberHelper.min(new long[0]));
+        assertEquals((long)-55, NumberHelper.min(new long[] {1,85,-4,6,3,-55}) );
+    }
+
+    @Test
+    void testMaxOfLongs() {
+        assertThrows(IllegalArgumentException.class, () -> NumberHelper.max((long[])null));
+        assertThrows(IllegalArgumentException.class, () -> NumberHelper.max(new long[0]));
+        assertEquals((long)85, NumberHelper.max(new long[] {1,85,-4,6,3,-55}) );
+    }
+
+    @Test
+    void testMinOfFloats() {
+        assertThrows(IllegalArgumentException.class, () -> NumberHelper.min((float[])null));
+        assertThrows(IllegalArgumentException.class, () -> NumberHelper.min(new float[0]));
+        assertEquals(-55.1f, NumberHelper.min(new float[] {1.1f,85.2f,-4.3f,6.3f,3.2f,-55.1f}) );
+    }
+
+    @Test
+    void testMaxOfFloats() {
+        assertThrows(IllegalArgumentException.class, () -> NumberHelper.max((float[])null));
+        assertThrows(IllegalArgumentException.class, () -> NumberHelper.max(new float[0]));
+        assertEquals(85.2f, NumberHelper.max(new float[] {1.1f,85.2f,-4.3f,6.3f,3.2f,-55.1f}) );
+    }
+
+    @Test
+    void testMinOfDoubles() {
+        assertThrows(IllegalArgumentException.class, () -> NumberHelper.min((double[])null));
+        assertThrows(IllegalArgumentException.class, () -> NumberHelper.min(new double[0]));
+        assertEquals(-55.1, NumberHelper.min(new double[] {1.1,85.2,-4.3,6.3,3.2,-55.1}) );
+    }
+
+    @Test
+    void testMaxOfDoubles() {
+        assertThrows(IllegalArgumentException.class, () -> NumberHelper.max((double[])null));
+        assertThrows(IllegalArgumentException.class, () -> NumberHelper.max(new double[0]));
+        assertEquals(85.2, NumberHelper.max(new double[] {1.1,85.2,-4.3,6.3,3.2,-55.1}) );
+    }
+
+    @Test
+    void testMinOfNumbers() {
+        assertThrows(IllegalArgumentException.class, () -> NumberHelper.min((Double[])null));
+        assertThrows(IllegalArgumentException.class, () -> NumberHelper.min(new Double[0]));
+        assertEquals(-55.1, NumberHelper.min(new Double[] {1.1,85.2,-4.3,6.3,3.2,-55.1}) );
+    }
+
+    @Test
+    void testMaxOfNumbers() {
+        assertThrows(IllegalArgumentException.class, () -> NumberHelper.max((Double[])null));
+        assertThrows(IllegalArgumentException.class, () -> NumberHelper.max(new Double[0]));
+        assertEquals(85.2, NumberHelper.max(new Double[] {1.1,85.2,-4.3,6.3,3.2,-55.1}) );
+    }
 }

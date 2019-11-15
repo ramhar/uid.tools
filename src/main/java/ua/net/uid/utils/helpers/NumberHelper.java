@@ -68,7 +68,7 @@ public class NumberHelper {
         return parse(source, new ParsePosition(0));
     }
     
-    public byte min(byte ... items) {
+    public static byte min(byte ... items) {
         if (items == null || items.length == 0)
             throw new IllegalArgumentException("the arguments array must not be null or empty");
         byte first = items[0];
@@ -83,7 +83,7 @@ public class NumberHelper {
         return first;
     }
     
-    public byte max(byte ... items) {
+    public static byte max(byte ... items) {
         if (items == null || items.length == 0)
             throw new IllegalArgumentException("the arguments array must not be null or empty");
         byte first = items[0];
@@ -98,7 +98,7 @@ public class NumberHelper {
         return first;
     }
     
-    public short min(short ... items) {
+    public static short min(short ... items) {
         if (items == null || items.length == 0)
             throw new IllegalArgumentException("the arguments array must not be null or empty");
         short first = items[0];
@@ -113,7 +113,7 @@ public class NumberHelper {
         return first;
     }
         
-    public short max(short ... items) {
+    public static short max(short ... items) {
         if (items == null || items.length == 0)
             throw new IllegalArgumentException("the arguments array must not be null or empty");
         short first = items[0];
@@ -128,7 +128,7 @@ public class NumberHelper {
         return first;
     }
 
-    public int min(int ... items) {
+    public static int min(int ... items) {
         if (items == null || items.length == 0)
             throw new IllegalArgumentException("the arguments array must not be null or empty");
         int first = items[0];
@@ -143,7 +143,7 @@ public class NumberHelper {
         return first;
     }
 
-    public int max(int ... items) {
+    public static int max(int ... items) {
         if (items == null || items.length == 0)
             throw new IllegalArgumentException("the arguments array must not be null or empty");
         int first = items[0];
@@ -158,7 +158,7 @@ public class NumberHelper {
         return first;
     }
 
-    public long min(long ... items) {
+    public static long min(long ... items) {
         if (items == null || items.length == 0)
             throw new IllegalArgumentException("the arguments array must not be null or empty");
         long first = items[0];
@@ -173,7 +173,7 @@ public class NumberHelper {
         return first;
     }
 
-    public long max(long ... items) {
+    public static long max(long ... items) {
         if (items == null || items.length == 0)
             throw new IllegalArgumentException("the arguments array must not be null or empty");
         long first = items[0];
@@ -188,7 +188,7 @@ public class NumberHelper {
         return first;
     }
     
-    public float min(float ... items) {
+    public static float min(float ... items) {
         if (items == null || items.length == 0)
             throw new IllegalArgumentException("the arguments array must not be null or empty");
         float first = items[0];
@@ -203,7 +203,7 @@ public class NumberHelper {
         return first;
     }
 
-    public float max(float ... items) {
+    public static float max(float ... items) {
         if (items == null || items.length == 0)
             throw new IllegalArgumentException("the arguments array must not be null or empty");
         final int length = items.length;
@@ -220,7 +220,7 @@ public class NumberHelper {
         return first;
     }
 
-    public double min(double ... items) {
+    public static double min(double ... items) {
         if (items == null || items.length == 0)
             throw new IllegalArgumentException("the arguments array must not be null or empty");
         double first = items[0];
@@ -235,7 +235,7 @@ public class NumberHelper {
         return first;
     }
     
-    public double max(double ... items) {
+    public static double max(double ... items) {
         if (items == null || items.length == 0)
             throw new IllegalArgumentException("the arguments array must not be null or empty");
         final int length = items.length;
@@ -251,13 +251,36 @@ public class NumberHelper {
         }
         return first;
     }
+
+    @SafeVarargs
+    public static <T extends Number & Comparable<? super T>> T min(T ... items) {
+        if (items == null || items.length == 0)
+        throw new IllegalArgumentException("the arguments array must not be null or empty");
+            final int length = items.length;
+        T first = items[0];
+        for(int i = 1; i < length; ++i) {
+            final T other = items[i];
+            if (other != null && other.compareTo(first) < 0)
+                first = other;
+        }
+        return first;
+    }
     
-    /*
-    public Number min(Number ... items) {
+    @SafeVarargs
+    public static <T extends Number & Comparable<? super T>> T max(T ... items) {
+        if (items == null || items.length == 0)
+        throw new IllegalArgumentException("the arguments array must not be null or empty");
+            final int length = items.length;
+        T first = items[0];
+        for(int i = 1; i < length; ++i) {
+            final T other = items[i];
+            if (other != null && other.compareTo(first) > 0)
+                first = other;
+        }
+        return first;
     }
-    public Number max(Number ... items) {
-    }
-    */
+
+    
     ////////////////////////////////////////////////////////////////////////////
     private static Number nextZeroDigit(CharSequence source, ParsePosition position, int end, int length) {
         if (end < source.length()) {
