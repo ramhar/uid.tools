@@ -164,8 +164,19 @@ class CastTest {
         assertEquals(TestEnum.zero, Cast.toEnum(TestEnum.class, "zero", TestEnum.one));
     }
 
+    @Test
+    void testToEnumIgnoreCase() {
+        assertNull(Cast.toEnumIgnoreCase(TestEnum.class, null, null));
+        assertNull(Cast.toEnumIgnoreCase(TestEnum.class, "", null));
+        assertNull(Cast.toEnumIgnoreCase(TestEnum.class, "qwe", null));
+        assertEquals(TestEnum.three, Cast.toEnumIgnoreCase(TestEnum.class, null, TestEnum.three));
+        assertEquals(TestEnum.two, Cast.toEnumIgnoreCase(TestEnum.class, "", TestEnum.two));
+        assertEquals(TestEnum.one, Cast.toEnumIgnoreCase(TestEnum.class, "qwe", TestEnum.one));
+        assertEquals(TestEnum.zero, Cast.toEnumIgnoreCase(TestEnum.class, "zero", TestEnum.one));
+        assertEquals(TestEnum.one, Cast.toEnumIgnoreCase(TestEnum.class, "One", TestEnum.zero));
+        assertEquals(TestEnum.two, Cast.toEnumIgnoreCase(TestEnum.class, "tWo", TestEnum.zero));
+        assertEquals(TestEnum.three, Cast.toEnumIgnoreCase(TestEnum.class, "THREE", TestEnum.zero));
+    }
 
     enum TestEnum {zero, one, two, three}
-
-
 }

@@ -4,6 +4,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.IOException;
+import java.util.Arrays;
+
 @SuppressWarnings("SpellCheckingInspection")
 class StringHelperTest {
 
@@ -98,5 +101,159 @@ class StringHelperTest {
         assertEquals(15, StringHelper.skipWhitespace(src, 12));
         assertEquals(15, StringHelper.skipWhitespace(src, 15));
         assertEquals(src.length(), StringHelper.skipWhitespace(src, 18));
+    }
+
+    @Test
+    void testJoinToBuilderWithEmptyAndNull() throws IOException {
+        StringBuilder builder = new StringBuilder();
+        Iterable<Object> src = Arrays.asList(1, 2, null, "q", "w", "");
+        
+        StringHelper.joinTo(builder, ",", src.iterator(), "E", "N");
+        assertEquals("1,2,N,q,w,E", builder.toString()); builder.setLength(0);
+
+        StringHelper.joinTo(builder, ",", src.iterator(), "E", "");
+        assertEquals("1,2,,q,w,E", builder.toString()); builder.setLength(0);
+
+        StringHelper.joinTo(builder, ",", src.iterator(), "E", null);
+        assertEquals("1,2,q,w,E", builder.toString()); builder.setLength(0);
+
+        StringHelper.joinTo(builder, ",", src.iterator(), "", "N");
+        assertEquals("1,2,N,q,w,", builder.toString()); builder.setLength(0);
+
+        StringHelper.joinTo(builder, ",", src.iterator(), null, "N");
+        assertEquals("1,2,N,q,w", builder.toString()); builder.setLength(0);
+    }
+
+    @Test
+    void testJoinToBuilderWithEmpty() throws IOException {
+        StringBuilder builder = new StringBuilder();
+        Iterable<Object> src = Arrays.asList(1, 2, null, "q", "w", "");
+
+        StringHelper.joinTo(builder, ",", src.iterator(), "-");
+        assertEquals("1,2,-,q,w,-", builder.toString()); builder.setLength(0);
+
+        StringHelper.joinTo(builder, ",", src.iterator(), "");
+        assertEquals("1,2,,q,w,", builder.toString()); builder.setLength(0);
+
+        StringHelper.joinTo(builder, ",", src.iterator(), null);
+        assertEquals("1,2,q,w", builder.toString()); builder.setLength(0);
+    }
+
+    @Test
+    void testJoinToBuilder() throws IOException {
+        StringBuilder builder = new StringBuilder();
+        StringHelper.joinTo(builder, ",", Arrays.asList(1, 2, null, "q", "w", "").iterator());
+        assertEquals("1,2,,q,w,", builder.toString()); builder.setLength(0);
+    }
+
+    @Test
+    void testJoinItemsToBuilder() throws IOException {
+        StringBuilder builder = new StringBuilder();
+        StringHelper.joinItemsTo(builder, ",", 1, 2, null, "q", "w", "");
+        assertEquals("1,2,,q,w,", builder.toString()); builder.setLength(0);
+    }
+
+    @Test
+    void testJoinWithEmptyAndNull() {
+        Iterable<Object> src = Arrays.asList(1, 2, null, "q", "w", "");
+        assertEquals("1,2,N,q,w,E", StringHelper.join(",", src.iterator(), "E", "N").toString());
+        assertEquals("1,2,,q,w,E", StringHelper.join(",", src.iterator(), "E", "").toString());
+        assertEquals("1,2,q,w,E", StringHelper.join(",", src.iterator(), "E", null).toString());
+        assertEquals("1,2,N,q,w,", StringHelper.join(",", src.iterator(), "", "N").toString());
+        assertEquals("1,2,N,q,w", StringHelper.join(",", src.iterator(), null, "N").toString());
+    }
+
+    @Test
+    void testJoinWithEmpty() throws IOException {
+        Iterable<Object> src = Arrays.asList(1, 2, null, "q", "w", "");
+        assertEquals("1,2,-,q,w,-", StringHelper.join(",", src.iterator(), "-").toString());
+        assertEquals("1,2,,q,w,", StringHelper.join(",", src.iterator(), "").toString());
+        assertEquals("1,2,q,w", StringHelper.join(",", src.iterator(), null).toString());
+    }
+
+    @Test
+    void testJoin() throws IOException {
+        Iterable<Object> src = Arrays.asList(1, 2, null, "q", "w", "");
+        assertEquals("1,2,,q,w,", StringHelper.join(",", src.iterator()).toString());
+    }
+
+    @Test
+    void testJoinItems() throws IOException {
+        assertEquals("1,2,,q,w,", StringHelper.joinItems(",", 1, 2, null, "q", "w", "").toString());
+    }
+
+    @Test
+    void testIsAscii() {
+        for(int i = 0; i < 128; ++i) 
+            assertTrue(StringHelper.isAscii(i));
+        for(int i = 7; i < 32; ++i)
+            assertFalse(StringHelper.isAscii(1 + (1 << i)));
+        assertFalse(StringHelper.isAscii(0xffffffff));
+    }
+
+    @Test
+    void testisAsciiUpper() {
+        for(int i = 0; i < 'A'; ++i) 
+            assertFalse(StringHelper.isAsciiUpper(i));
+        for(int i = 'A'; i <= 'Z'; ++i) 
+            assertTrue(StringHelper.isAsciiUpper(i));
+        for(int i = 'Z' + 1; i <= 128; ++i) 
+            assertFalse(StringHelper.isAsciiUpper(i));
+        for(int i = 7; i < 32; ++i)
+            assertFalse(StringHelper.isAsciiUpper(1 + (1 << i)));
+        assertFalse(StringHelper.isAsciiUpper(0xffffffff));
+    }
+
+    @Test
+    void testIsAsciiLower() {
+        for(int i = 0; i < 'a'; ++i) 
+            assertFalse(StringHelper.isAsciiLower(i));
+        for(int i = 'a'; i <= 'z'; ++i) 
+            assertTrue(StringHelper.isAsciiLower(i));
+        for(int i = 'z' + 1; i <= 128; ++i) 
+            assertFalse(StringHelper.isAsciiLower(i));
+        for(int i = 7; i < 32; ++i)
+            assertFalse(StringHelper.isAsciiLower(1 + (1 << i)));
+        assertFalse(StringHelper.isAsciiLower(0xffffffff));
+    }
+
+    @Test
+    void testIsAsciiDigit() {
+        for(int i = 0; i < '0'; ++i) 
+            assertFalse(StringHelper.isAsciiDigit(i));
+        for(int i = '0'; i <= '9'; ++i) 
+            assertTrue(StringHelper.isAsciiDigit(i));
+        for(int i = '9' + 1; i <= 128; ++i) 
+            assertFalse(StringHelper.isAsciiDigit(i));
+        for(int i = 7; i < 32; ++i)
+            assertFalse(StringHelper.isAsciiDigit(1 + (1 << i)));
+        assertFalse(StringHelper.isAsciiDigit(0xffffffff));
+    }
+
+    @Test
+    void testIsBlank() {
+        assertTrue(StringHelper.isBlank(null));
+        assertTrue(StringHelper.isBlank(""));
+        assertTrue(StringHelper.isBlank(" \t\r\n\u005Ct"));
+        assertFalse(StringHelper.isBlank("a"));
+        assertFalse(StringHelper.isBlank(" \t\r\n\u005Ctq"));
+        assertFalse(StringHelper.isBlank(" \t\r\n\0x2F81A"));
+    }
+
+    @Test
+    void testLength() {
+        assertEquals(0, StringHelper.length(null));
+        assertEquals(0, StringHelper.length(""));
+        assertEquals(3, StringHelper.length("123"));
+    }
+
+    @Test
+    void testToCodePoints() {
+        assertNull(StringHelper.toCodePoints(null));
+        assertEquals(0, StringHelper.toCodePoints("").length);
+        String src = "Пří視客øĥäΘい파ป็م♛";
+        int[] codes = {1055, 345, 237, 35222, 23458, 248, 293, 228, 920, 12356, 54028, 3611, 3655, 1605, 9819};
+        // String dst = new String(codes, 0, codes.length);
+        assertArrayEquals(codes, StringHelper.toCodePoints(src));
     }
 }

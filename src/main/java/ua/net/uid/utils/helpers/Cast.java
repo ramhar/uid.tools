@@ -139,4 +139,8 @@ public class Cast {
     public static <T extends Enum<T>> T toEnum(Class<T> enumType, String value, T defaults) {
         return EnumHelper.valueOf(enumType, value, defaults);
     }
+
+    public static <T extends Enum<T>> T toEnumIgnoreCase(Class<T> enumType, String value, T defaults) {
+        return EnumHelper.valueOfIgnoreCase(enumType, value, defaults);
+    }
 }
