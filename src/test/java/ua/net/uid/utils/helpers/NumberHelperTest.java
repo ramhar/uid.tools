@@ -89,19 +89,19 @@ class NumberHelperTest {
             "0 0x0 0x7a 0x1f9c 0x00000ffffff 0x10000ffffff 0x0. 0x7.a 0x1f.9c 0x00000.ffffff 0x10000.ffffff "+
             "0x0p0 0x1000P+256 0x1000P-256 0x1.fffffffffffffp1023 0x0.0000000000001P-1022 0x1.0P-1074 0x1.8p+1";
         
-        assertEquals((byte)0, NumberHelper.parse(source, position));
+        assertEquals(0L, NumberHelper.parse(source, position));
         assertEquals(1, position.getIndex());
 
-        assertEquals((byte)0, NumberHelper.parse(source, position));
+        assertEquals(0L, NumberHelper.parse(source, position));
         assertEquals(5, position.getIndex());
 
-        assertEquals((byte)0x7a, NumberHelper.parse(source, position));
+        assertEquals(0x7aL, NumberHelper.parse(source, position));
         assertEquals(10, position.getIndex());
 
-        assertEquals((short)0x1f9c, NumberHelper.parse(source, position));
+        assertEquals(0x1f9cL, NumberHelper.parse(source, position));
         assertEquals(17, position.getIndex());
 
-        assertEquals(0xffffff, NumberHelper.parse(source, position));
+        assertEquals(0xffffffL, NumberHelper.parse(source, position));
         assertEquals(31, position.getIndex());
 
         assertEquals(0x10000ffffffL, NumberHelper.parse(source, position));
@@ -153,19 +153,19 @@ class NumberHelperTest {
         ParsePosition position = new ParsePosition(0);
         String source = "0 01 077 06666 01234567 0123456701234567";
 
-        assertEquals((byte)0, NumberHelper.parse(source, position));
+        assertEquals(0L, NumberHelper.parse(source, position));
         assertEquals(1, position.getIndex());
 
-        assertEquals((byte)01, NumberHelper.parse(source, position));
+        assertEquals(01L, NumberHelper.parse(source, position));
         assertEquals(4, position.getIndex());
         
-        assertEquals((byte)077, NumberHelper.parse(source, position));
+        assertEquals(077L, NumberHelper.parse(source, position));
         assertEquals(8, position.getIndex());
 
-        assertEquals((short)0_66_66, NumberHelper.parse(source, position));
+        assertEquals(0_66_66L, NumberHelper.parse(source, position));
         assertEquals(14, position.getIndex());
 
-        assertEquals(01234567, NumberHelper.parse(source, position));
+        assertEquals(01234567L, NumberHelper.parse(source, position));
         assertEquals(23, position.getIndex());
 
         assertEquals(0123456701234567L, NumberHelper.parse(source, position));
@@ -180,16 +180,16 @@ class NumberHelperTest {
         ParsePosition position = new ParsePosition(0);
         String source = "0b0 0b1 0b11111111 0b1111111111111111111111111111111111111111111111111111111111111111 0ba";
         
-        assertEquals((byte)0, NumberHelper.parse(source, position));
+        assertEquals(0L, NumberHelper.parse(source, position));
         assertEquals(3, position.getIndex());
 
-        assertEquals((byte)1, NumberHelper.parse(source, position));
+        assertEquals(1L, NumberHelper.parse(source, position));
         assertEquals(7, position.getIndex());
 
-        assertEquals((short)0b11111111, NumberHelper.parse(source, position));
+        assertEquals(0b11111111L, NumberHelper.parse(source, position));
         assertEquals(18, position.getIndex());
 
-        assertEquals((byte)-1, NumberHelper.parse(source, position));
+        assertEquals(-1L, NumberHelper.parse(source, position));
         assertEquals(85, position.getIndex());
 
         assertNull(NumberHelper.parse(source, position));
@@ -203,16 +203,16 @@ class NumberHelperTest {
         ParsePosition position = new ParsePosition(0);
         String source = "1 333 70000 465729124123444 .01 77. 3.333 .1e-3 222.e76 123.456e-78 888e+8 ";
 
-        assertEquals((byte)1, NumberHelper.parse(source, position));
+        assertEquals(1L, NumberHelper.parse(source, position));
         assertEquals(1, position.getIndex());
 
-        assertEquals((short)333, NumberHelper.parse(source, position));
+        assertEquals(333L, NumberHelper.parse(source, position));
         assertEquals(5, position.getIndex());
 
-        assertEquals(70000, NumberHelper.parse(source, position));
+        assertEquals(70000L, NumberHelper.parse(source, position));
         assertEquals(11, position.getIndex());
 
-        assertEquals(465729124123444l, NumberHelper.parse(source, position));
+        assertEquals(465729124123444L, NumberHelper.parse(source, position));
         assertEquals(27, position.getIndex());
 
         assertEquals(.01, NumberHelper.parse(source, position));
