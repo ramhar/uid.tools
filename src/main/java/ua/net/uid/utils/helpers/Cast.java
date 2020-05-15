@@ -29,6 +29,10 @@ public class Cast {
 
     private Cast() {
     }
+    
+    public static String toString(final Object value, String defaults) {
+        return CommonHelper.isEmpty(value) ? defaults : value.toString();
+    }
 
     public static Boolean toBoolean(final String text, Boolean defaults) {
         if (text != null) {

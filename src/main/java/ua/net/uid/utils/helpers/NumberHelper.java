@@ -302,11 +302,11 @@ public class NumberHelper {
                         }
                     }
                     position.setIndex(end);
-                    return smallest(value);
+                    return value;
             }
         }
         position.setIndex(end);
-        return (byte)0;
+        return 0L;
     }
 
     private static Number nextHexNumeric(CharSequence source, ParsePosition position, int end, int length) {
@@ -370,7 +370,7 @@ public class NumberHelper {
                 }
                 return (double)main * Math.pow(2, base);
             } else {
-                return smallest(main);
+                return main;
             }
         }
         position.setErrorIndex(end);
@@ -392,7 +392,7 @@ public class NumberHelper {
                     ++end;
                 }
                 position.setIndex(end);
-                return smallest(value);
+                return value;
             }
         }
         position.setErrorIndex(end);
@@ -422,7 +422,7 @@ public class NumberHelper {
         if (real) {
             return (double)main * Math.pow(10, base);
         } else {
-            return smallest(main);
+            return main;
         }
     }
 
