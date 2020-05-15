@@ -16,7 +16,7 @@
 -->
 # uid.tools
 
-[![License](http://img.shields.io/:license-apache-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html) [![Build Status](https://git.uid.net.ua/uid/uid.tools/build/master/badge.svg)](https://git.uid.net.ua/uid/uid.tools/build/master/badge.svg)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0) ![Build Status](https://git.uid.net.ua/uid/uid.tools/build/master/badge.svg)
 
 pom.xml:
 
