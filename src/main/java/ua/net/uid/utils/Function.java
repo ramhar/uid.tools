@@ -18,8 +18,8 @@ package ua.net.uid.utils;
 /**
  *
  * @author nightfall
- * @param <T>
- * @param <R>
+ * @param <T> argument type
+ * @param <R> result type
  */
 @FunctionalInterface
 public interface Function<T, R> {

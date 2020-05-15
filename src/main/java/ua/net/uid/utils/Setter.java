@@ -18,8 +18,8 @@ package ua.net.uid.utils;
 /**
  * 
  * @author nightfall
- * @param <K> 
- * @param <V> 
+ * @param <K> key type
+ * @param <V> value type
  */
 public interface Setter<K, V> {
     void set(K name, V value);

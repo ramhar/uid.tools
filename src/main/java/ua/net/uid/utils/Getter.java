@@ -18,8 +18,8 @@ package ua.net.uid.utils;
 /**
  *
  * @author nightfall
- * @param <K> argument type
- * @param <V> result type
+ * @param <K> key type
+ * @param <V> value type
  */
 public interface Getter<K, V> {
     V get(K key);
