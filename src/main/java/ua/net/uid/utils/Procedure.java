@@ -19,8 +19,9 @@ package ua.net.uid.utils;
  *
  * @author nightfall
  * @param <T> argument type
+ * @param <E> exception type
  */
 @FunctionalInterface
-public interface Procedure<T> {
-    void call(T param) throws Exception;
+public interface Procedure<T, E extends Throwable> {
+    void call(T param) throws E;
 }

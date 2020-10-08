@@ -20,8 +20,9 @@ package ua.net.uid.utils;
  * @author nightfall
  * @param <T> argument type
  * @param <R> result type
+ * @param <E> exception type
  */
 @FunctionalInterface
-public interface Function<T, R> {
-    R call(T param) throws Exception;
+public interface Function<T, R, E extends Throwable> {
+    R call(T param) throws E;
 }
